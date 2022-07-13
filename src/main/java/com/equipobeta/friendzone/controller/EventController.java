@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class EventController {
 
-@DeleteMapping(value = "/posts/{id}")
+@DeleteMapping(value = "event/{id}")
     public String deleteEvent(@PathVariable Long id) {
 
-        EventService.delete(user_event);
+        EventService.delete(eventId);
+
+//    buscar para poner una alerta //
 
         if (EventService) {
-            return "";
+            return "Se ha borrado el evento";
         }
     return null;
 }
