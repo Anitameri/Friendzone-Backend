@@ -18,6 +18,9 @@ public class EventController {
     @Autowired
     EventService service;
 
+    @Autowired
+    UserService uservice;
+
     public EventController(UserService userService, EventService eventService) {
         this.userService = userService;
         this.eventService = eventService;
@@ -28,14 +31,30 @@ public class EventController {
         return service.getAllEvents();
     }
 
+//    !!!!!!FORMA MIGUEL!!!!!!!!
+//
+//    @PostMapping("/api/createevent")
+//    public Event addEvent(@RequestBody Event event) {
+//        User authUser = userService.findById(1L);
+//
+//        event.setUser(authUser);
+//
+//        return eventService.createEvent(event);
+//    }
+
+//    !!!!!!!!!FORMA JESUS
 
     @PostMapping("/api/createevent")
-    public Event addEvent(@RequestBody Event event) {
-        User authUser = userService.findById(1L);
-
-        event.setUser(authUser);
-
-        return eventService.createEvent(event);
+    public Event event(@RequestBody EventDto p)
+    {
+        Event pp = new Event();
+        pp.setName(p.getName());
+        pp.setDescription(p.getDescription());
+        pp.setBudget(p.getBudget());
+        pp.setImage(p.getImage());
+        pp.setEvent_date(p.getEvent_date());
+        pp.setOwner(uservice.getUserById(p.getUser_id()).orElse(null));
+        return service.create(pp);
     }
 
 

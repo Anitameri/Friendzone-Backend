@@ -34,12 +34,19 @@ public class Event implements Serializable{
     private String image;
 
     @ManyToMany(mappedBy = "events")
-    private Collection <User> users;
+    private Collection <User> members;
 
     @ManyToOne
     @JoinColumn(name="user_id, nulleable=false")
-    private User user;
+    private User owner;
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
     public Event(){
 

@@ -1,6 +1,7 @@
 package com.equipobeta.friendzone.users;
 
 import com.equipobeta.friendzone.events.Event;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,15 +30,17 @@ public class User implements Serializable {
     private String username;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     @JoinTable(
-            name = "event_users",
+            name = "owner",
             joinColumns = @JoinColumn(
                     name = "user_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "event_id"))
     private Collection <Event> events;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "owner")
+    @JsonIgnore
     private Set<Event> event;
 
 
