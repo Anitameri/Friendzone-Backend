@@ -36,6 +36,10 @@ public class Event implements Serializable{
     @ManyToMany(mappedBy = "events")
     private Collection <User> users;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private com.equipobeta.friendzone.auth.security.user.User user;
+
     public Event(){
 
     }

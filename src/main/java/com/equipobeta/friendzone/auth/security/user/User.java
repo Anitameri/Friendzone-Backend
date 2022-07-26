@@ -2,61 +2,108 @@ package com.equipobeta.friendzone.auth.security.user;
 
 import com.equipobeta.friendzone.auth.role.Role;
 import com.equipobeta.friendzone.events.Event;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.sql.Timestamp;
-import java.util.HashSet;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Set;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(	name = "user",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
+public class User implements Serializable, UserDetails {
+    private static final Long serialVersionUID = 1L;
 
-public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Username is required")
-    @Size(max = 20)
-    private String username;
-    @NotBlank(message = "Password is required")
-    @Size(max = 150)
-    private String password;
-    @NotBlank
-    @Size(max = 50)
-    @Email
+    private String name;
     private String email;
-    private Timestamp created;
+    private String password;
+    @Enumerated(EnumType.STRING)
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Event> events;
 
+    public User(Set<Event> events) {
 
-    public User(String username,String email, String password) {
-        this.username = username;
-        this.password = password;
+        this.events = events;
+    }
+    public User(String name, String email, String password) {
+        this.name = name;
         this.email = email;
+        this.password = password;
+    }
+
+    public User() {
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

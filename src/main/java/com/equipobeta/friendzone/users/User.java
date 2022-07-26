@@ -1,21 +1,21 @@
 package com.equipobeta.friendzone.users;
 
 import com.equipobeta.friendzone.events.Event;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serial;
+
 import java.io.Serializable;
+
+
 import java.util.Collection;
+import java.util.Set;
+
+
 
 @Entity
-
-@Getter
-@Setter
-
-public class User implements Serializable {
-    @Serial
+public class User implements Serializable, UserDetails {
     private static final Long serialVersionUID = 1L;
 
     @Id
@@ -24,35 +24,92 @@ public class User implements Serializable {
     private String name;
     private String email;
     private String password;
-    private String username;
+    @Enumerated(EnumType.STRING)
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "event_users",
-            joinColumns = @JoinColumn(
-                    name = "user_id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "event_id"))
-    private Collection <Event> events;
 
+    @OneToMany (mappedBy = "user")
+    private Set<Event> events;
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String password, String username) {
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.username = username;
     }
 
-    public User(String name, String email, String password, String username) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.username = username;
+    public String getEmail() {
+        return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
