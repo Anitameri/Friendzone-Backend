@@ -10,17 +10,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-
-    @Value("${equipoise.app.jwtSecret}")
+    @Value("${equipobeta.app.jwtSecret}")
     private String jwtSecret;
 
-
-    @Value("${equipoise.app.jwtExpirationMs}")
+    @Value("${equipobeta.app.jwtExpirationMs}")
     private int jwtExpirationMs;
+
 
 
     public String generateJwtToken(Authentication authentication) {
