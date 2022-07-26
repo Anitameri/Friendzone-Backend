@@ -15,10 +15,10 @@ import java.util.Date;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${equipobeta.app.jwtSecret}")
+    @Value("${app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${equipobeta.app.jwtExpirationMs}")
+    @Value("${app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
 
@@ -51,9 +51,9 @@ public class JwtUtils {
 
             return true;
         }
-//        catch (SignatureException e) {
-//            logger.error("Invalid JWT signature: {}", e.getMessage());
-//        }
+        catch (SignatureException e) {
+            logger.error("Invalid JWT signature: {}", e.getMessage());
+        }
         catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
