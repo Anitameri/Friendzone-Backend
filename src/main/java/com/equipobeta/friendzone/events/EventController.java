@@ -2,17 +2,10 @@ package com.equipobeta.friendzone.events;
 
 import com.equipobeta.friendzone.users.User;
 import com.equipobeta.friendzone.users.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -34,7 +27,7 @@ public class EventController {
      //listar todos los eventos
      
     @GetMapping("/api/allevents")
-    public List<Event> getall(){
+    public List<Event> findAll(){
         return eventService.getAllEvents();
     }
 
@@ -43,7 +36,7 @@ public class EventController {
 
     @DeleteMapping("/api/delete/{id}")
     public Long delete(@PathVariable("id") Long id) {
-        Event event = eventService.findById(id);
+        Optional event = eventService.findById(id);
         eventService.deleteById(id);
         return id;
     }
@@ -59,7 +52,7 @@ public class EventController {
     }
 
     @GetMapping("/api/oneevent/{id}")
-    public Event findEventById(@PathVariable Long id) {
+    public Optional findEventById(@PathVariable Long id) {
         return eventService.findById(id);
     }
 

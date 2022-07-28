@@ -10,7 +10,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
-import java.text.DateFormat;
 import java.util.Collection;
 
 @Entity
@@ -44,11 +43,23 @@ public class Event implements Serializable{
     private User owner;
 
 
-    public Event(){
+    public Event(long l, String name, String location, String description, String image, String budget, String hour, String event_date, String members){
 
     }
 
-    public Event(Long id, String name, Date event_date, String location, float budget, String description, String image, Time hour) {
+    public Event(String name) {
+        this.name = name;
+        this.event_date = event_date;
+        this.hour = hour;
+        this.location = location;
+        this.budget = budget;
+        this.description = description;
+        this.image = image;
+        this.members = members;
+        this.owner = owner;
+    }
+
+    public Event(String name, String location) {
         this.id = id;
         this.name = name;
         this.event_date = event_date;
@@ -59,7 +70,7 @@ public class Event implements Serializable{
         this.hour = hour;
     }
 
-    public Event(String name, Date event_date, String location, float budget, String description, String image, Time hour) {
+    public Event(String name, String location, String description) {
         this.name = name;
         this.event_date = event_date;
         this.location = location;
@@ -68,4 +79,5 @@ public class Event implements Serializable{
         this.image = image;
         this.hour = hour;
     }
+
 }
